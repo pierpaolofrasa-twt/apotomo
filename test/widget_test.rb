@@ -105,18 +105,14 @@ class WidgetTest < MiniTest::Spec
       assert_equal @mum.name, @mum.widget_id
     end
 
-    it "respond to DEFAULT_VIEW_PATHS" do
-      assert_equal ["app/widgets"], Apotomo::Widget::DEFAULT_VIEW_PATHS
+    it "returns the default view paths" do
+      Apotomo.widgets_path = "widgets"
+      assert_equal ActionView::PathSet.new(["app/widgets", "test/widgets"]).paths, Apotomo::Widget.view_paths.paths
     end
 
-    it "respond to .view_paths" do
-      if Cell.rails3_2_or_more?
-        assert_equal ActionView::PathSet.new(Apotomo::Widget::DEFAULT_VIEW_PATHS + ["test/widgets"]).paths, Apotomo::Widget.view_paths.paths
-      elsif Cell.rails4_0_or_more?
-        Apotomo::Widget.view_paths.paths.to_s.must_match("app/widgets")
-      else
-        assert_equal ActionView::PathSet.new(Apotomo::Widget::DEFAULT_VIEW_PATHS + ["test/widgets"]), Apotomo::Widget.view_paths
-      end
+    it "returns custom view paths" do
+      Apotomo.widgets_path = "apotomo"
+      assert_equal ActionView::PathSet.new(["app/apotomo", "test/apotomo"]).paths, Apotomo::Widget.view_paths.paths
     end
 
     it "respond to .controller_path" do

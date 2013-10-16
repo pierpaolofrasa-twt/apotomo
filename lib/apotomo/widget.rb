@@ -36,7 +36,11 @@ module Apotomo
   #   def update(evt)
   #     @cheese = Cheese.find evt[:cheese_id]
   class Widget < Cell::Rails
-    DEFAULT_VIEW_PATHS = [File.join('app', Apotomo.widgets_path)]
+
+    # make this dynamic, instead of relying on a constant in order to support a custom widgets path
+    def self.view_paths
+      ActionView::PathSet.new([File.join('app', Apotomo.widgets_path), File.join('test', Apotomo.widgets_path)])
+    end
     
     include Hooks
     

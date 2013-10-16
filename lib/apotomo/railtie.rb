@@ -17,8 +17,5 @@ module Apotomo
       ActionController::Base.extend Apotomo::Rails::ControllerMethodsLoader
     end
     
-    initializer 'apotomo.setup_view_paths', :after => 'cells.setup_view_paths' do |app|
-      Apotomo::Widget.setup_view_paths!
-    end
   end 
 end
