@@ -5,8 +5,7 @@ module Apotomo
       @js_generator = JavascriptGenerator.new(js_framework)
     end
     
-    attr_reader :js_generator, :js_framework
-    attr_accessor :widgets_path
+    attr_reader :js_generator, :js_framework, :widgets_path
     
     # Apotomo setup/configuration helper for initializer.
     #
@@ -21,9 +20,17 @@ module Apotomo
   end
 end
 
-Apotomo.widgets_path = "widgets"
-
 require 'apotomo/widget'
+
+module Apotomo
+  class << self
+    def widgets_path=(widgets_path)
+      @widgets_path = widgets_path
+      Apotomo::Widget.view_paths = Apotomo::Widget.view_paths
+    end
+  end
+end
+
 require 'apotomo/railtie'
 require 'apotomo/widget_shortcuts'
 require 'apotomo/rails/controller_methods'
@@ -31,3 +38,4 @@ require 'apotomo/javascript_generator'
 require 'apotomo/test_case' if Rails.env == "test"
 
 Apotomo.js_framework = :jquery ### DISCUSS: move to rails.rb
+Apotomo.widgets_path = "widgets"
