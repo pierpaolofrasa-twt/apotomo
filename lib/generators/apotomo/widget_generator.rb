@@ -5,7 +5,7 @@ module Apotomo
     module BasePathMethods
     private
       def base_path
-        File.join('app/widgets', class_path, file_name)
+        File.join('app', Apotomo.widgets_path, class_path, file_name)
       end
     end
     

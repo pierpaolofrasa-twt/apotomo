@@ -6,6 +6,7 @@ module Apotomo
     end
     
     attr_reader :js_generator, :js_framework
+    attr_accessor :widgets_path
     
     # Apotomo setup/configuration helper for initializer.
     #
@@ -19,6 +20,8 @@ module Apotomo
     end
   end
 end
+
+Apotomo.widgets_path = "widgets"
 
 require 'apotomo/widget'
 require 'apotomo/railtie'

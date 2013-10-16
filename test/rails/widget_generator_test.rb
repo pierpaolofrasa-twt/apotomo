@@ -6,6 +6,10 @@ class WidgetGeneratorTest < Rails::Generators::TestCase
   setup :prepare_destination
   tests ::Apotomo::Generators::WidgetGenerator
 
+  def setup
+    Apotomo.widgets_path = "widgets"
+  end
+
   # describe "Running rails g apotomo::widget" do
   #   describe "Gerbil squeak snuggle" do
       test "create the standard assets" do
@@ -55,6 +59,23 @@ class WidgetGeneratorTest < Rails::Generators::TestCase
         assert_file "app/widgets/gerbil/mouse/squeak.html.erb", %r(app/widgets/gerbil/mouse/squeak\.html\.erb)
         assert_file "test/widgets/gerbil/mouse_widget_test.rb"
       end
+
+      test "create the standard assets with a custom path" do
+
+        Apotomo.widgets_path = "apotomo"
+        run_generator %w(Gerbil squeak snuggle -t test_unit)
+
+        assert_file "app/apotomo/gerbil_widget.rb", /class GerbilWidget < Apotomo::Widget/
+        assert_file "app/apotomo/gerbil_widget.rb", /def snuggle/
+        assert_file "app/apotomo/gerbil_widget.rb", /def squeak/
+        assert_file "app/apotomo/gerbil/snuggle.html.erb", %r(app/apotomo/gerbil/snuggle\.html\.erb)
+        assert_file "app/apotomo/gerbil/snuggle.html.erb", %r(<p>)
+        assert_file "app/apotomo/gerbil/squeak.html.erb", %r(app/apotomo/gerbil/squeak\.html\.erb)
+
+        assert_file "test/apotomo/gerbil_widget_test.rb", %r(class GerbilWidgetTest < Apotomo::TestCase)
+        assert_file "test/apotomo/gerbil_widget_test.rb", %r(widget\(:gerbil\))
+      end
+
 
     # end
   # end
